@@ -143,7 +143,7 @@ def parse_power(pow):
 
 
 class Candidate(object):
-    def __init__(self, candnum, sigma, numharm, ipow, cpow, bin, z,
+    def __init__(self, candnum, sigma, numharm, ipow, cpow, bin, z, w,
                  DMstr, filename, T):
         self.path, self.filename = os.path.split(filename)
         self.candnum = candnum
@@ -154,6 +154,7 @@ class Candidate(object):
         self.r = bin
         self.f = bin/T
         self.z = z
+        self.w = w
         self.T = T
         self.p = 1.0/self.f
         self.DMstr = DMstr
@@ -1106,13 +1107,14 @@ def candlist_from_candfile(filename, trackbad=False, trackdupes=False):
             numharm   = int(split_line[4])
             bin       = float(split_line[7].split("(")[0])
             z         = float(split_line[9].split("(")[0])
+            w         = float(split_line[10].split("(")[0])
             f = bin / tobs    # Spin freq in hz
             p = 1.0 / f       # Spin period in sec
 
             # Add it to the candidates list
             DMstr = DM_re.search(filename).groups()[0]
             cands.append(Candidate(candnum, sigma, numharm,
-                                          i_pow_det, c_pow, bin, z, 
+                                          i_pow_det, c_pow, bin, z, w,
                                           DMstr, filename, tobs))
             candnums.append(candnum)
             last_candnum = candnum
